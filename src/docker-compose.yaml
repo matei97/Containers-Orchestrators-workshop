@@ -1,0 +1,23 @@
+version: '2'
+services:
+  web:
+    container_name: back-end-app
+    image: matei97/workshop:back-end-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - custom-network
+  postgres:
+    container_name: postgres-db
+    image: postgres
+    environment:
+      POSTGRES_DB: password
+    networks:
+      - custom-network
+    volumes:
+      - {PATH}:/var/lib/postgresql/data"
+networks:
+  custom-network:
+    driver: bridge
