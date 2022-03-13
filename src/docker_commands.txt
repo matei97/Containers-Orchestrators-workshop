@@ -1,0 +1,9 @@
+docker netowrk create workshop-netowrk
+
+docker run --name postgres-db --network workshop-netowrk -e POSTGRES_PASSWORD=password -d -v "{APP_PATH}:/var/lib/postgresql/data" postgres
+
+
+
+docker run --name postgres-db --network workshop-netowrk -e POSTGRES_PASSWORD=password -d -v "C:\Users\matei\Desktop\Facultate\Clouding T\containersWorkshop\Containers-Orchestrators-workshop\data":"/var/lib/postgresql/data" postgres
+
+docker run -d --name back-end-app -p 8080:8080 --network workshop-netowrk workshop-back-end-db:latest
