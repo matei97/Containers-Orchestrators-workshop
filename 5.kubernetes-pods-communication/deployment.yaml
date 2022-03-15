@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: matei97/kubernetes:back-end
+          ports:
+            - containerPort: 5000
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "500m"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: matei97/kubernetes:front-end
+          ports:
+            - containerPort: 8080
+          env:
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: back-end-credentials
+                  key: username
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: back-end-credentials
+                  key: password
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-end
+spec:
+  ports:
+    - port: 5000
+      targetPort: 5000
+  selector:
+    app: backend
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: frontend
+
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: back-end-credentials
+type: Opaque
+stringData:
+  username: cloud
+  password: computing

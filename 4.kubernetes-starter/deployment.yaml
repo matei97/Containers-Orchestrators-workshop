@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      environment: development
+  template:
+    metadata:
+      labels:
+        environment: development
+    spec:
+      containers:
+       - name: backend
+         image: matei97/repo:back-end-app
+         ports:
+         - containerPort: 8080
+         resources:
+          limits:
+            memory: "64Mi"
+            cpu: "500m"
