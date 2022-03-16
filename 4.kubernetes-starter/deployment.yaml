@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
        - name: backend
-         image: matei97/repo:back-end-app
+         image: matei97/hello-world-nodejs:2.0    
          ports:
          - containerPort: 8080
          resources:

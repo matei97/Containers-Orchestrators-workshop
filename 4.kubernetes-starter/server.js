@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 
 // Constants
@@ -10,7 +11,13 @@ let current_Date = new Date();
 // App
 const app = express();
 app.get('/', (req, res) => {
-  res.send('Hello Cloud Computing');
+  result = (new Date() - current_Date) / 1000;
+  if(result > 20){
+    res.send('ERROR, no more connections avaiable for database')
+  }
+  else{
+  res.send('Hello Cloud Computing -> Version 2');
+}
 });
 
 app.get('/health', (req, res) => {
